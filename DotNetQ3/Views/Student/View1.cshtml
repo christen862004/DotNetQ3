@@ -1,0 +1,38 @@
+﻿<h1>Hello World</h1>
+<h3>.Net Track</h3>
+<style>
+    h1{
+        color:yellow;
+        background-color:blue;
+        margin:10px;
+    }
+</style>
+<script>
+    console.log("Hello");
+</script>
+
+<!--Razor Engin :Razor Syntax "Server Side Code"" Render ==>HTML" -->
+<!--Block Of Code-->
+@{
+    int x = 10;
+    int y = x + 10;
+    int z = y + x;
+}
+<!--inline statment value html -->
+<h2>@x</h2>
+<!--Condition Statment-->
+@if (x > y)
+{
+    <h3>x=@x greater than y=@y</h3>
+}
+else
+{
+    <h3>x=@x less than y=@y</h3>
+}
+
+
+<!--Looping statment-->
+@for(int i = 0; i < 10; i++){
+    <li>@i</li>
+}
+

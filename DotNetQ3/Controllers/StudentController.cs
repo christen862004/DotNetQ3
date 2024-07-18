@@ -16,6 +16,7 @@ namespace DotNetQ3.Controllers
         //Student/DEtails?id=2
         public IActionResult Details(int id)
         {
+
             //Get Model
             StudentBL studentBL = new StudentBL();
             Student stdMoedl= studentBL.GetByID(id);

@@ -24,7 +24,7 @@ namespace DotNetQ3.Controllers
             return View("StdDEtails",stdMoedl);//view StdDEtails,Model Type Student
 
         }
-
+        
 
 
 

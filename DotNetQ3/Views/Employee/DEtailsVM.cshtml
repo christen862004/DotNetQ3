@@ -1,0 +1,22 @@
+﻿
+@model EmpNameWithBrchListColorDateMesViewModel
+
+@* @model DotNetQ3.ViewModels.EmpNameWithBrchListColorDateMesViewModel *@
+
+@{
+    ViewData["Title"] = "DEtailsVM";
+}
+
+<h1>DEtailsVM</h1>
+<h2 style="color:@Model.Color">
+@Model.Message
+@Model.EmpName
+@(Model.No+10)
+</h2>
+<select class="form form-control">
+    @foreach (var item in Model.BranchList)
+    {
+        <option>@item</option>
+    }
+</select>
+

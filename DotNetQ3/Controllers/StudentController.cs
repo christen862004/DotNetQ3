@@ -13,7 +13,8 @@ namespace DotNetQ3.Controllers
             return View("AllStd", StdListModel);//view Name="AllStd",Model type List<student>
         }
 
-        //Student/DEtails?id=2
+        //Student/DEtails?id=2 [Qs]
+        //Student/DEtails/2    [route values]
         public IActionResult Details(int id)
         {
 

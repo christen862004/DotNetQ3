@@ -10,7 +10,28 @@ namespace DotNetQ3.Controllers
         {
             
         }
-
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return View("Add");//Model Null
+        }
+        //Support reuest (GET|Post)
+      
+        [HttpPost]
+        public IActionResult SaveAdd(Department newDept)
+        {
+            //if (Request.Method == "POST")
+            
+            if (newDept.Name != null && newDept.ManagerName != null)
+            {
+                context.Add(newDept);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("Add", newDept);//View Add,Model DEpartment
+            
+        }
+        
         public IActionResult Index()
         {
             List<Department> DEptListModel= context.Department.ToList();

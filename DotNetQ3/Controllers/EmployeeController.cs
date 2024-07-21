@@ -12,6 +12,57 @@ namespace DotNetQ3.Controllers
         {
                 
         }
+
+        public IActionResult Index()
+        {
+            return View("Index", context.Employee.ToList());
+        }
+        //Employee/Edit/1 Get
+        public IActionResult Edit(int id)
+        {
+            Employee empModel = context.Employee.FirstOrDefault(e => e.Id == id);
+          
+            EmpWithDeptListViewModel empVM=new EmpWithDeptListViewModel();
+            empVM.Id = empModel.Id;
+            empVM.Name = empModel.Name;
+            empVM.Address = empModel.Address;
+            empVM.DeptartmentId = empModel.DeptartmentId;
+            empVM.Salary = empModel.Salary;
+            empVM.ImageUrl = empModel.ImageUrl;
+            empVM.JobTitle = empModel.JobTitle;
+
+            empVM.DeptList = context.Department.ToList();
+
+
+            return View("Edit",empVM);
+        }
+
+        [HttpPost]
+        public IActionResult SaveEdit(EmpWithDeptListViewModel empFromReq)
+        {
+            if (empFromReq.Name != null && empFromReq.Salary > 6000)
+            {
+                Employee empModel=context.Employee.FirstOrDefault(e=>e.Id==empFromReq.Id);
+                empModel.Name = empFromReq.Name;
+                empModel.Address = empFromReq.Address;
+                empModel.Salary = empFromReq.Salary;
+                empModel.JobTitle = empFromReq.JobTitle;
+                empModel.DeptartmentId= empFromReq.DeptartmentId;
+                empModel.ImageUrl = empFromReq.ImageUrl;
+
+                //context.Update(empFromReq);//Must ID with value
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+           
+            empFromReq.DeptList = context.Department.ToList();
+            return View("Edit", empFromReq);
+        }
+
+
+
+
         public IActionResult test()
         {
             return NoContent();

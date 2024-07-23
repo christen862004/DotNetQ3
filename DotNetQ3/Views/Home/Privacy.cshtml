@@ -1,6 +1,22 @@
 ﻿@{
+    Layout = "_MyLayout";//null
     ViewData["Title"] = "Privacy Policy";
 }
+<!--Named Placeholder-->
+@section FooterSection {
+    <h3>Hello FRom View To Footer Section</h3>
+}
+
+@section HeaderSection {
+    <h3>Hello From View To Header Section</h3>
+}
+
+
+<!--RenderBody-->
+<hr />
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+
+<hr />
+

@@ -13,6 +13,27 @@ namespace DotNetQ3.Controllers
                 
         }
 
+        [HttpGet]//Anchor create reqquest type Get
+        public IActionResult New()
+        {
+            ViewBag.DeptList = context.Department.ToList();
+
+            return View("New");
+        }
+
+        [HttpPost]
+        public IActionResult SaveNew(Employee newEmpFromRequest)
+        {
+            if (newEmpFromRequest.Name != null)
+            {
+                context.Add(newEmpFromRequest);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.DeptList = context.Department.ToList();
+            return View("New", newEmpFromRequest);
+        }
         public IActionResult Index()
         {
             return View("Index", context.Employee.ToList());
@@ -67,7 +88,7 @@ namespace DotNetQ3.Controllers
         {
             return NoContent();
         }
-        public IActionResult DEtails(int id)
+        public IActionResult DEtails(int id,string Msg)
         {
             //object obj = new Employee();
             //((Employee)obj).

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace DotNetQ3.Models
 {
+    
+
+
     public class TestClass
     {
         int no;

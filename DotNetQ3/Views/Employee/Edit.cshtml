@@ -8,8 +8,16 @@
 <form method="post" action="/Employee/SaveEdit/@Model.Id">
   @*   <input type="hidden" name="id" value="@Model.Id" /> *@
     <div>
-        <label>Name</label>
-        <input class="form form-control" name="Name" value="@Model.Name" id="Name" />
+        <label asp-for="Name"></label>
+        <input class="form form-control" asp-for="Name"/>
+        
+
+        @* @Html.LabelFor(e=>e.Name) *@
+        @* @Html.TextBoxFor(e => e.Name, new { style = "color:red", @class = "form form-control" }) *@
+        @* @Html.EditorFor(e=>e.Name) *@
+        
+        @* <label for="Name">Name</label> *@
+        @* <input class="form form-control"  name="Name" value="@Model.Name" id="Name" /> *@
     </div>
     <div>
         <label>Address</label>
@@ -25,11 +33,14 @@
     </div>
     <div>
         <label>Salary</label>
-        <input class="form form-control" name="Salary" value="@Model.Salary" id="Salary" type="number"/>
+        <input class="form form-control" asp-for="Salary" />
+        @* @Html.EditorFor(e=>e.Salary) *@
+        @* <input class="form form-control" name="Salary" value="@Model.Salary" id="Salary" type="number"/> *@
     </div>
 
     <div>
-        <label>DeptartmentId</label>
+        @Html.LabelFor(e=>e.DeptartmentId)
+        @* <label>Deptartment</label> *@
         @* <input class="form form-control" name="DeptartmentId" value="@Model.DeptartmentId" id="DeptartmentId" /> *@
         <select class="form form-control" name="DeptartmentId">
             @foreach (var deptItem in Model.DeptList)
@@ -42,18 +53,26 @@
                 {
                     <option value="@deptItem.Id">@deptItem.Name</option>
                 }
+                
+
             }
         </select>
     </div>
-    <input type="submit" value="SAve" class="btn btn-success" />
+    <input type="submit" value="Save" class="btn btn-success" />
 </form>
 
 <a href="/Employee/Index">Back To List</a>
+<hr />
+@Html.ActionLink("Back To List","Index","Employee")
+
+<a asp-controller="Employee" asp-action="Index">Back To List</a>
 
 
 
-            <select name="DeptartmentId">
-                <option value="1">Sd</option>
-                <option value="2">OS</option>
+<hr />
+<a href="/Employee/Details/@Model.Id?msg=asdasdsd">DEatils</a>
+<hr />
+@Html.ActionLink("DEatils Link", "Details", "Employee", new { id = Model.Id, Msg = "helloo" })
 
-            </select>
+<a asp-controller="Employee" asp-action="Details" 
+asp-route-id="@Model.Id" asp-route-Msg="Hello"> DEtails</a>

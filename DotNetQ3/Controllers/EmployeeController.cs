@@ -12,6 +12,16 @@ namespace DotNetQ3.Controllers
         {
                 
         }
+        //Employeee/CheckSalary?Salary=10000&jobTitle=web
+        public IActionResult CheckSalary(int Salary,string JobTitle)
+        {
+            if(Salary>6000)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
+
 
         [HttpGet]//Anchor create reqquest type Get
         public IActionResult New()
@@ -24,11 +34,19 @@ namespace DotNetQ3.Controllers
         [HttpPost]
         public IActionResult SaveNew(Employee newEmpFromRequest)
         {
-            if (newEmpFromRequest.Name != null)
+            if (ModelState.IsValid==true)
             {
-                context.Add(newEmpFromRequest);
-                context.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    context.Add(newEmpFromRequest);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }catch (Exception ex) /* Constrain Exption */
+                {
+                    /*Custom Valiadtion [action]*/
+                    // ModelState.AddModelError("DeptartmentId","Please Select DEpartment");
+                    ModelState.AddModelError("ayhaga", ex.Message + " " + ex.InnerException?.Message);
+                }
             }
 
             ViewBag.DeptList = context.Department.ToList();

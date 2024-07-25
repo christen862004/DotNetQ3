@@ -20,7 +20,7 @@ namespace DotNetQ3.Models
         public int Salary { get; set; }
         //Employeee/CheckSalary?Salary=10000&JobTitle=BackEnd
 
-        [RegularExpression(@"\w{2,}\.(png|jpg)",ErrorMessage ="Image Must be .png or .jpg files")]
+        [RegularExpression(@"\w{1,}\.(png|jpg)",ErrorMessage ="Image Must be .png or .jpg files")]
         public string ImageUrl { get; set; }
 
         public string? Address { get; set; }

@@ -12,10 +12,24 @@ namespace DotNetQ3.Controllers
         {
                 
         }
+        public IActionResult Index()
+        {
+            return View("Index", context.Employee.ToList());
+        }
+
+        //Employee/GetEmpCardPartial/1 (Part of Page) partial request using Ajax
+        public IActionResult GetEmpCardPartial(int id)
+        {
+            Employee empModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            return PartialView("_EmpCardPartial",empModel);
+        }
+
+
         //Employeee/CheckSalary?Salary=10000&jobTitle=web
         public IActionResult CheckSalary(int Salary,string JobTitle)
         {
-            if(Salary>6000)
+            int baseSaalary = 6000;
+            if(Salary>baseSaalary)
             {
                 return Json(true);
             }
@@ -52,10 +66,7 @@ namespace DotNetQ3.Controllers
             ViewBag.DeptList = context.Department.ToList();
             return View("New", newEmpFromRequest);
         }
-        public IActionResult Index()
-        {
-            return View("Index", context.Employee.ToList());
-        }
+       
         //Employee/Edit/1 Get
         public IActionResult Edit(int id)
         {
@@ -99,7 +110,12 @@ namespace DotNetQ3.Controllers
             return View("Edit", empFromReq);
         }
 
-
+        public IActionResult Delete (int id)
+        {
+            Employee empModel = 
+                context.Employee.FirstOrDefault(x => x.Id == id);
+            return View("Delete", empModel);
+        }
 
 
         public IActionResult test()

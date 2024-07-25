@@ -5,39 +5,7 @@
 }
 
 <h1>DEtails</h1>
-<h2 style="background-color:@ViewData["clr"]">@Model.Name</h2>
-<h2 style="background-color:@ViewBag.clr">@Model.Name</h2>
 
-
-<h2> --- @ViewData["Message"] ---</h2>
-<select class="form form-control">
-    @foreach (var item in (List<string>)ViewData["Brch"])
-    {
-        <option>@item</option>
-    }
-</select>
-
-<select class="form form-control">
-    @foreach (var item in ViewBag.Brch)
-    {
-        <option>@item</option>
-    }
-</select>
-
-
-
-<h2>@ViewData["no"] + 10</h2>
-
- <h2>@(int.Parse(ViewData["no"].ToString())+10)</h2>
-<h2>@(ViewBag.no+10)</h2>
-
- <!-- 
-     Problem ViewData
-        Type Casting
-        Magic String "KEy" ==>NULL thriw exception
- -->
-<!--
-    Problem ViewBag
-       Type Casting Runtime "Thow expetion"
-       Magic String "KEy" ==>NULL thriw exception
--->
+@* <partial name="_EmpCardPartial" model="Model.Department"/> *@
+<partial name="_EmpCardPartial"/>
+<a href="/Employee/Edit/@Model.Id" class="btn btn-primary">Edit Profile</a>

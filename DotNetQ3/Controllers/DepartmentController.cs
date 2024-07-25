@@ -10,6 +10,23 @@ namespace DotNetQ3.Controllers
         {
             
         }
+
+        public IActionResult ShowDEptEmp()
+        {
+            List<Department> DeptListModel= 
+                context.Department.ToList();
+            return View("ShowDEptEmp", DeptListModel);
+        }
+        
+        //Department/GetEmpsByDEpt?deptId=1
+        public IActionResult GetEmpsByDEpt(int deptId)
+        {
+            List<Employee> EmpList=
+                context.Employee.Where(e=>e.DeptartmentId==deptId).ToList();
+            return Json(EmpList);
+        }
+
+
         [HttpGet]
         public IActionResult Add()
         {

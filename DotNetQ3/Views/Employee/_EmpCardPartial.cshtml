@@ -1,0 +1,11 @@
+﻿<!--_EmpCardPartial Strong Type-->
+@model Employee
+
+<div class="card" style="width:350px">
+    <img class="card-img-top" src="/Images/@Model.ImageUrl" alt="Card image">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Name</h4>
+        <p class="card-text">@Model.Address</p>
+        <a href="/Employee/Index" class="btn btn-primary">Back To List</a>
+    </div>
+</div>

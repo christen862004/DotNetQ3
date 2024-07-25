@@ -4,6 +4,7 @@
 }
 
 <h1>Index</h1>
+<div id="Card" style="border:2px solid blue"></div>
 <a class="btn btn-success" asp-controller="Employee" asp-action="New" >New</a>
 <table class="table table-bordered table-hover">
     @foreach (var item in Model)
@@ -14,7 +15,36 @@
             <td>
                 <a href="/Employee/Edit/@item.Id">Edit</a>
             </td>
+            <td>
+                <a href="/Employee/Details/@item.Id">Details</a>
+            </td>
+            <td>
+                <a href="/Employee/Delete/@item.Id">Delete</a>
+            </td>
+
+            <td>
+                <!--Full Request (HttpRequest) ==>HttpReposse -->
+                <a href="#" onclick="GetCard(@item.Id)">Get Card</a>
+
+                <input type="button" onclick="GetCard(@item.Id)" value="get Card" />
+            </td>
         </tr>
     }
 
 </table>
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+
+
+<script>
+    function GetCard(EmpID) {
+        event.preventDefault();
+        $.ajax({
+            url: "/Employee/GetEmpCardPartial/"+EmpID, 
+            success: function (result) {
+                console.log(result)
+                $("#Card").html(result);
+            }
+        });
+    } 
+</script>

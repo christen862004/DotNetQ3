@@ -1,0 +1,15 @@
+﻿
+@inject IDepartmentRepository depREpo
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h2>Id FRom Controller</h2>
+<h3>@ViewBag.Id</h3>
+
+<hr />
+<h2>Id From View</h2>
+<h3>@depREpo.Id</h3>
+

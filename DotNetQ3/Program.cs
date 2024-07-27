@@ -1,3 +1,7 @@
+using DotNetQ3.Models;
+using DotNetQ3.Repository;
+using Microsoft.EntityFrameworkCore;
+
 namespace DotNetQ3
 {
     public class Program
@@ -6,6 +10,7 @@ namespace DotNetQ3
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region Services in IOC Container
             // Add services to the container.//Service s Day8  
             builder.Services.AddControllersWithViews();
 
@@ -13,6 +18,19 @@ namespace DotNetQ3
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+            //REgister IOC Contrinaer
+
+            //1) Built in service already register (IConfiguration)
+            //2) Built in Sevice need to register
+            builder.Services.AddDbContext<ITIContext>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });//inject constructor ITIcontext
+
+            //3) Custom service and need regitser <--
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            #endregion
             
             var app = builder.Build();
             
@@ -54,13 +72,34 @@ namespace DotNetQ3
 
             app.UseSession();/*session default setting*/
 
-            app.UseRouting();
+            app.UseRouting();/*default middleware*/
 
             app.UseAuthorization();
+            //order Add Route
+            //app.MapControllerRoute("Route1", "t1/{age:int:max(20)}/{name?}",//2 segmat || 3 segmat
+            //    new
+            //    {
+            //        controller="Route",
+            //        action= "Test1"
+            //    });
+            //app.MapControllerRoute("Route2", "t2",
+            //    new
+            //    {
+            //        controller = "Route",
+            //        action = "Test2"
+            //    });
+            //app.MapControllerRoute("Route1", "t1/{action}",//2 segmat || 3 segmat
+            //    new
+            //    {
+            //        controller = "Route"
+            //    });
+            //app.MapControllerRoute("Route1", "{controller=Employee}/{action=Index}");
+
+            //Naming Cnofination route
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Employee}/{action=Index}/{id?}");
             #endregion
             app.Run();
         }

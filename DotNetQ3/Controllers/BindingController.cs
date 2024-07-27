@@ -6,6 +6,10 @@ namespace DotNetQ3.Controllers
 {
     public class BindingController : Controller
     {
+        
+
+
+
         //Test Biding Premitive
         //Binding/testPrimitive/12?age=10&name=Ahemd&color[1]=red&color[0]=blue
         //Binding/testPrimitive?id=12&age=10&name=Ahemd&color[1]=red&color[0]=blue

@@ -1,26 +1,35 @@
 ﻿using DotNetQ3.Models;
+using DotNetQ3.Repository;
 using DotNetQ3.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetQ3.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeeController : Controller//High Level
     {
-        ITIContext context = new ITIContext();
-
-        public EmployeeController()
+        //DIP (lossly couple )[IOC]
+       
+        IEmployeeRepository EmployeeRepository;//abstarction |Interface
+        IDepartmentRepository DepartmentRepository;
+     
+        //Controller one Contrusture(inject |ask)
+        public EmployeeController
+            (IEmployeeRepository empREpo,IDepartmentRepository DeptREpo)
+            //[DI] ask IOC Container
         {
-                
+            //Dont Create ==>ask (DI)
+            EmployeeRepository = empREpo;// new EmployeeRepository();   //DIP             
+            DepartmentRepository = DeptREpo;// new DepartmentRepository();
         }
         public IActionResult Index()
         {
-            return View("Index", context.Employee.ToList());
+            return View("Index", EmployeeRepository.GetAll());
         }
 
         //Employee/GetEmpCardPartial/1 (Part of Page) partial request using Ajax
         public IActionResult GetEmpCardPartial(int id)
         {
-            Employee empModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee empModel =EmployeeRepository.GetById(id);
             return PartialView("_EmpCardPartial",empModel);
         }
 
@@ -40,7 +49,7 @@ namespace DotNetQ3.Controllers
         [HttpGet]//Anchor create reqquest type Get
         public IActionResult New()
         {
-            ViewBag.DeptList = context.Department.ToList();
+            ViewBag.DeptList = DepartmentRepository.GetAll();
 
             return View("New");
         }
@@ -52,8 +61,8 @@ namespace DotNetQ3.Controllers
             {
                 try
                 {
-                    context.Add(newEmpFromRequest);
-                    context.SaveChanges();
+                    EmployeeRepository.Insert(newEmpFromRequest);
+                    EmployeeRepository.Save();
                     return RedirectToAction("Index");
                 }catch (Exception ex) /* Constrain Exption */
                 {
@@ -63,15 +72,15 @@ namespace DotNetQ3.Controllers
                 }
             }
 
-            ViewBag.DeptList = context.Department.ToList();
+            ViewBag.DeptList = DepartmentRepository.GetAll();
             return View("New", newEmpFromRequest);
         }
        
         //Employee/Edit/1 Get
         public IActionResult Edit(int id)
         {
-            Employee empModel = context.Employee.FirstOrDefault(e => e.Id == id);
-          
+            Employee empModel = EmployeeRepository.GetById(id);
+            //Mapping
             EmpWithDeptListViewModel empVM=new EmpWithDeptListViewModel();
             empVM.Id = empModel.Id;
             empVM.Name = empModel.Name;
@@ -81,7 +90,7 @@ namespace DotNetQ3.Controllers
             empVM.ImageUrl = empModel.ImageUrl;
             empVM.JobTitle = empModel.JobTitle;
 
-            empVM.DeptList = context.Department.ToList();
+            empVM.DeptList = DepartmentRepository.GetAll();
 
 
             return View("Edit",empVM);
@@ -92,7 +101,7 @@ namespace DotNetQ3.Controllers
         {
             if (empFromReq.Name != null && empFromReq.Salary > 6000)
             {
-                Employee empModel=context.Employee.FirstOrDefault(e=>e.Id==empFromReq.Id);
+                Employee empModel= EmployeeRepository.GetById(empFromReq.Id);
                 empModel.Name = empFromReq.Name;
                 empModel.Address = empFromReq.Address;
                 empModel.Salary = empFromReq.Salary;
@@ -101,19 +110,19 @@ namespace DotNetQ3.Controllers
                 empModel.ImageUrl = empFromReq.ImageUrl;
 
                 //context.Update(empFromReq);//Must ID with value
-                context.SaveChanges();
+                EmployeeRepository.Save();
 
                 return RedirectToAction("Index");
             }
            
-            empFromReq.DeptList = context.Department.ToList();
+            empFromReq.DeptList =DepartmentRepository.GetAll();
             return View("Edit", empFromReq);
         }
 
         public IActionResult Delete (int id)
         {
             Employee empModel = 
-                context.Employee.FirstOrDefault(x => x.Id == id);
+                EmployeeRepository.GetById(id);
             return View("Delete", empModel);
         }
 
@@ -145,7 +154,7 @@ namespace DotNetQ3.Controllers
             ViewData["clr"] = "red";
             ViewBag.Chris = "33";//ViewData["Chris"]="33"
             ViewBag.clr = "blue";
-            Employee empModel=context.Employee.FirstOrDefault(x => x.Id == id);
+            Employee empModel=EmployeeRepository.GetById(id);
             return View("DEtails",empModel);
         }
 
@@ -159,7 +168,7 @@ namespace DotNetQ3.Controllers
             branchList.Add("Manofia");
             branchList.Add("Alex");
 
-            Employee empModel = context.Employee.FirstOrDefault(x => x.Id == id);
+            Employee empModel = EmployeeRepository.GetById(id);
             //Map frpm souce ==>ViewMdoel
             var EmpVM = new EmpNameWithBrchListColorDateMesViewModel();
             EmpVM.EmpName = empModel.Name;

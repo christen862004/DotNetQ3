@@ -1,20 +1,24 @@
 ﻿using DotNetQ3.Models;
+using DotNetQ3.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetQ3.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
-        public DepartmentController()
+       // ITIContext context = new ITIContext();
+       IDepartmentRepository DeptRepository;
+        IEmployeeRepository EmployeeRepository;
+        public DepartmentController(IDepartmentRepository deptREpo,IEmployeeRepository EmpREpo)
         {
-            
+            DeptRepository=deptREpo;//= new DepartmentRepository();
+            EmployeeRepository=EmpREpo;//= new EmployeeRepository();
         }
 
         public IActionResult ShowDEptEmp()
         {
             List<Department> DeptListModel= 
-                context.Department.ToList();
+                DeptRepository.GetAll();
             return View("ShowDEptEmp", DeptListModel);
         }
         
@@ -22,7 +26,7 @@ namespace DotNetQ3.Controllers
         public IActionResult GetEmpsByDEpt(int deptId)
         {
             List<Employee> EmpList=
-                context.Employee.Where(e=>e.DeptartmentId==deptId).ToList();
+               EmployeeRepository.GetByDeptID(deptId);
             return Json(EmpList);
         }
 
@@ -41,8 +45,9 @@ namespace DotNetQ3.Controllers
             
             if (newDept.Name != null && newDept.ManagerName != null)
             {
-                context.Add(newDept);
-                context.SaveChanges();
+                DeptRepository.Insert(newDept);
+
+                DeptRepository.Save();
                 return RedirectToAction("Index");
             }
             return View("Add", newDept);//View Add,Model DEpartment
@@ -51,13 +56,13 @@ namespace DotNetQ3.Controllers
         
         public IActionResult Index()
         {
-            List<Department> DEptListModel= context.Department.ToList();
+            List<Department> DEptListModel = DeptRepository.GetAll();
             return View("Index", DEptListModel);//view name="Index" ,Model Type List<department>
         }
 
         public IActionResult DEtails(int id)
         {
-            Department departmentModel = context.Department.FirstOrDefault(x => x.Id == id);
+            Department departmentModel = DeptRepository.GetById(id);
             return View("Details", departmentModel);//View DEatils ,Model Department
         }
     }

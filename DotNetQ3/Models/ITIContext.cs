@@ -11,6 +11,12 @@ namespace DotNetQ3.Models
         public ITIContext() : base()
         { }
 
+        //constructor options[DI ]
+        public ITIContext(DbContextOptions<ITIContext> options)//ask ioc container options
+            :base(options)
+        {
+                
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=DotNet_Q3;Integrated Security=True;Encrypt=False;Trust Server Certificate=False");

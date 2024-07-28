@@ -1,4 +1,6 @@
-﻿namespace DotNetQ3.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace DotNetQ3.Models
 {
     public class Department
     {

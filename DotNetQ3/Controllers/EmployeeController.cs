@@ -22,6 +22,7 @@ namespace DotNetQ3.Controllers
             DepartmentRepository = DeptREpo;// new DepartmentRepository();
         }
         public IActionResult Index()
+        
         {
             return View("Index", EmployeeRepository.GetAll());
         }

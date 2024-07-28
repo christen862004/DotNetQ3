@@ -1,5 +1,6 @@
 ﻿using DotNetQ3.Models;
 using DotNetQ3.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetQ3.Controllers
@@ -54,12 +55,15 @@ namespace DotNetQ3.Controllers
             
         }
         
+        [Authorize]//check cookie | login
         public IActionResult Index()
         {
+
             List<Department> DEptListModel = DeptRepository.GetAll();
             return View("Index", DEptListModel);//view name="Index" ,Model Type List<department>
         }
 
+        [Authorize(Roles="Admin")]
         public IActionResult DEtails(int id)
         {
             Department departmentModel = DeptRepository.GetById(id);

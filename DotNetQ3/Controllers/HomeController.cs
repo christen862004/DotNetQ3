@@ -28,7 +28,7 @@ namespace DotNetQ3.Controllers
         {
             return View();
         }
-
+        //cache 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

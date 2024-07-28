@@ -1,5 +1,7 @@
+using DotNetQ3.Filtters;
 using DotNetQ3.Models;
 using DotNetQ3.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNetQ3
@@ -11,9 +13,13 @@ namespace DotNetQ3
             var builder = WebApplication.CreateBuilder(args);
 
             #region Services in IOC Container
-            // Add services to the container.//Service s Day8  
-            builder.Services.AddControllersWithViews();
 
+            // Add services to the container.//Service s Day8  
+            //builder.Services.AddControllersWithViews(options =>
+            //{
+            //    options.Filters.Add(new HandelErrorAttribute());
+            //});
+            builder.Services.AddControllersWithViews();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -26,6 +32,14 @@ namespace DotNetQ3
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });//inject constructor ITIcontext
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+            }).AddEntityFrameworkStores<ITIContext>();
+            
 
             //3) Custom service and need regitser <--
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -73,9 +87,13 @@ namespace DotNetQ3
             app.UseSession();/*session default setting*/
 
             app.UseRouting();/*default middleware*/
-
+            
+            app.UseAuthentication();
+            
             app.UseAuthorization();
-            //order Add Route
+
+
+            #region order Add Route
             //app.MapControllerRoute("Route1", "t1/{age:int:max(20)}/{name?}",//2 segmat || 3 segmat
             //    new
             //    {
@@ -96,7 +114,7 @@ namespace DotNetQ3
             //app.MapControllerRoute("Route1", "{controller=Employee}/{action=Index}");
 
             //Naming Cnofination route
-
+#endregion
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Employee}/{action=Index}/{id?}");
